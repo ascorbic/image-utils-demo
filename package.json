@@ -15,11 +15,11 @@
   },
   "license": "0BSD",
   "dependencies": {
-    "gatsby": "^2.26.1",
-    "gatsby-plugin-image": "^0.2.0",
-    "gatsby-plugin-sharp": "^2.9.0",
-    "gatsby-source-filesystem": "^2.6.0",
-    "gatsby-transformer-sharp": "^2.7.0",
+    "gatsby": "next",
+    "gatsby-plugin-image": "image-helpers",
+    "gatsby-plugin-sharp": "image-helpers",
+    "gatsby-source-filesystem": "next",
+    "gatsby-transformer-sharp": "next",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
