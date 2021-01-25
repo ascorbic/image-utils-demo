@@ -7,10 +7,25 @@ import {
   IImage,
 } from "gatsby-plugin-image";
 
+const EVERY_BREAKPOINT = [
+  320,
+  654,
+  768,
+  1024,
+  1366,
+  1600,
+  1920,
+  2048,
+  2560,
+  3440,
+  3840,
+  4096,
+];
+
 export function makeCloudinaryUrl(
   width: number,
   height: number,
-  format: ImageFormat,
+  format: ImageFormat = "auto",
   fit: Fit,
   filename: string,
   cloudname: string
@@ -36,10 +51,11 @@ export function makeCloudinaryUrl(
   if (height) {
     props.push(`h_${height}`);
   }
+  props.push(`f_${format}`);
 
   return `https://res.cloudinary.com/${cloudname}/image/upload/${props.join(
     ","
-  )}/${filename}.${format}`;
+  )}/${filename}`;
 }
 
 export interface ICloudinaryImageProps {
@@ -48,15 +64,18 @@ export interface ICloudinaryImageProps {
   width?: number;
   height?: number;
   maxWidth?: number;
-  maxHeight?: number;
   layout?: Layout;
-  formats?: Array<ImageFormat>;
+  aspectRatio?: number;
 }
 
 export function useCloudinaryImage({
-  layout,
+  layout = "constrained",
   cloudname,
   filename,
+  width,
+  height,
+  aspectRatio,
+  maxWidth,
   ...props
 }: ICloudinaryImageProps) {
   const generateImageSource = (
@@ -74,24 +93,38 @@ export function useCloudinaryImage({
     };
   };
 
+  const breakpoints = maxWidth
+    ? EVERY_BREAKPOINT.filter((bp) => bp <= maxWidth)
+    : EVERY_BREAKPOINT;
+
+  if (layout === "fullWidth") {
+    width ||= maxWidth || breakpoints[breakpoints.length - 1];
+    height ||= aspectRatio ? width / aspectRatio : width / (4 / 3);
+  } else {
+    if (!width || (!height && !aspectRatio)) {
+      console.warn(
+        `You must provide width and height for images where layout is ${layout}`
+      );
+    }
+    width ||= 800;
+    if (aspectRatio) {
+      height ||= width / aspectRatio;
+    }
+  }
+
   const args: IGatsbyImageHelperArgs = {
+    ...props,
     pluginName: "useCloudinaryImage",
     generateImageSource,
     layout,
     filename,
+    formats: ["auto"],
+    breakpoints,
     sourceMetadata: {
-      width: (props.width || props.maxWidth) * 2,
-      height: (props.height || props.maxHeight) * 2,
-      format: undefined,
+      width,
+      height,
+      format: "auto",
     },
-    placeholderURL: makeCloudinaryUrl(
-      20,
-      undefined,
-      "jpg",
-      `cover`,
-      filename,
-      cloudname
-    ),
   };
   return useGatsbyImage(args);
 }
