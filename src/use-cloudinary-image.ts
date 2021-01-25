@@ -54,7 +54,7 @@ export function makeCloudinaryUrl(
   )}/${filename}`;
 }
 
-export interface ICloudinaryImageProps {
+export interface UseCloudinaryImageProps {
   filename: string;
   cloudname: string;
   width?: number;
@@ -73,7 +73,7 @@ export function useCloudinaryImage({
   aspectRatio,
   maxWidth,
   ...props
-}: ICloudinaryImageProps) {
+}: UseCloudinaryImageProps) {
   const generateImageSource = (
     filename: string,
     width: number,
