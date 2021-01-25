@@ -30,10 +30,6 @@ export function makeCloudinaryUrl(
   filename: string,
   cloudname: string
 ): string {
-  const dot = filename.lastIndexOf(".");
-  if (dot && dot !== -1) {
-    filename = filename.substr(0, dot);
-  }
   let crop: string;
   switch (fit) {
     case "fill":

@@ -16,10 +16,9 @@
   "license": "0BSD",
   "dependencies": {
     "gatsby": "next",
-    "gatsby-plugin-image": "image-helpers",
-    "gatsby-plugin-sharp": "image-helpers",
+    "gatsby-plugin-image": "next",
+    "gatsby-plugin-sharp": "next",
     "gatsby-source-filesystem": "next",
-    "gatsby-transformer-sharp": "next",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
